@@ -7,18 +7,29 @@ menos um cadastro de vendedor no sistema. Este cadastro servirá para fazer a
 autenticação numa API.
 Segurança é primordial, portanto, utilize os conceitos de token de autenticação.
 
-[] Usuário (id, name, is_admin, is_seller, created_at, updated_at)
-● Autenticar o usuário
+[] users (id, name, is_admin, is_seller, created_at, updated_at)
+[x] Autenticar o usuário
+[] Criar um novo usuário
+[] Pegar usuário logado
 
 #Antes da venda ser feita, é necessário que haja produtos no banco de dados,
 portanto, espera-se um CRUD:
 
-[] Produto (id, name, description, category, photo)
-● Listar produtos
-● Buscar um produto específico
-● opcional - Deletar um produto
-● opcional - Atualizar um produto
-● opcional - Controle de estoque
+[] products (id, name, description, category, photo)
+[] Listar produtos
+[] Buscar um produto específico
+[] opcional - Deletar um produto
+[] opcional - Atualizar um produto
+[] opcional - Controle de estoque
+
+[] clients (id, name, description, category, photo)
+[] Listar Clientes
+
+[] stock_products (id, name, description, category, photo)
+[] Adicionar produto
+
+[] sales (id, name, description, category, photo)
+[] Listar vendas
 
 ##Atenção: Lembre-se que, ao criar qualquer entidade via api, é necessário validações:
 valores de produtos não podem ser inferiores a zero, nomes devem ter um limite de
