@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  mk_seller-api:
+     build:
+       args:
+         user: mksolutions
+         uid: 1000
+         gid: 1000
+       context: ./
+       dockerfile: Dockerfile
+     image: mk_seller
+     container_name: mk-seller
+     restart: unless-stopped
+     volumes:
+       - .:/home/mksolutions/api
+       - /home/mksolutions/api/node_modules
+     ports:
+      - '3333:3333'
+     networks:
+       - mksolutions-network
+  mk_seller_pg:
+    image: postgres
+    container_name: mk-postgres
+    environment:
+      - POSTGRES_USER=mksolutions
+      - POSTGRES_PASSWORD=mk@1234
+      - POSTGRES_DB=mkdata
+
+    restart: unless-stopped
+    volumes:
+      - ./database/postgres/docker-entrypoint-initdb:/docker-entrypoint-initdb.d/
+      - mksolutions-docker-data:/data
+    ports:
+      - "5432:5432"
+    networks:
+      - mksolutions-network
+volumes:
+  mksolutions-docker-data:
+
+
+networks:
+  mksolutions-network:
+    driver: bridge
