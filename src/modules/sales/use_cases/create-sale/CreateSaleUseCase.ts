@@ -82,6 +82,7 @@ class CreateSaleUseCase {
     const qrCodeBase64 = await qrcode.toDataURL(qrCodeData);
 
     return {
+      hash: transactionHash,
       transactions: totalTransactions,
       qrcode: qrCodeBase64,
     };

@@ -12,6 +12,11 @@ Segurança é primordial, portanto, utilize os conceitos de token de autenticaç
 [x] Criar um novo usuário
 [x] Pegar usuário logado
 
+[] clients (id, name, email, phone, created_at, updated_at)
+[] Listar clientes
+[] Criar cliente
+[] Ver compras do cliente
+
 #Antes da venda ser feita, é necessário que haja produtos no banco de dados,
 portanto, espera-se um CRUD:
 
@@ -22,17 +27,9 @@ portanto, espera-se um CRUD:
 [X] opcional - Atualizar um produto
 [X] opcional - Controle de estoque
 
-[] clients (id, name, email, phone, created_at, updated_at)
-[] Listar clientes
-[] Criar cliente
-[] Ver compras do cliente
-
 [x] stock_products (id, name, description, created_at, updated_at)
 [x] Incluir no estoque
 [x] Movimentar Entrada e Saida
-
-[] sales (id, name, description, category, photo, created_at, updated_at)
-[] Listar vendas
 
 ##Atenção: Lembre-se que, ao criar qualquer entidade via api, é necessário validações:
 valores de produtos não podem ser inferiores a zero, nomes devem ter um limite de
@@ -41,9 +38,15 @@ caracteres etc. Seja criativo, mas não muito.
 #. No momento da venda, podem ser selecionados N produtos. Cada produto poderá
 ser comprado em qualquer quantidade.
 
+[x] sales (id, name, description, created_at, updated_at)
+[x] Será possível executar uma venda
+[x] Será possível listar todas as vendas
+[x] Será Possível capturar uma venda pendente para faturar
+
 #Para que o cliente possa pagar, o retorno da api de cadastro de venda deve conter
 um QrCode em base64. O payload do QrCode deve ter obrigatoriamente o valor total da
 venda. Sinta-se livre para adicionar mais informações.
+[x] Criação da imagem para pagamento
 
 #Criar container com Docker para o banco de dados e aplicação.
 [x] Criar arquivo de configuração do docker-compose e dockerfile
@@ -55,4 +58,4 @@ produtos mais vendidos:
 RabbitMq, Apache Camel, queue com redis etc.
 
 #opcional - Criar indexes para as tabelas de banco de dados e fazer um breve
-comentário explicando o porquê das escolhas.
+comentário explicando o porquê das escolhas.x

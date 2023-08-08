@@ -10,7 +10,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-enum SaleStatus {
+export enum SaleStatus {
   PAY = 'pay',
   PENDING = 'pending',
   CANCEL = 'cancel',
