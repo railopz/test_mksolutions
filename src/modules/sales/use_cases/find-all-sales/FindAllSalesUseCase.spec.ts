@@ -2,13 +2,12 @@ import FakeUsersRepository from '@modules/users/repositories/mock/FakeUsersRepos
 import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider';
 import { CreateUserUseCase } from '@modules/users/use_cases/create-user/CreateUserUseCase';
 import { CreateProductUseCase } from '@modules/products/use_cases/create-product/CreateProductUseCase';
-import { FindProductByIdUseCase } from '@modules/products/use_cases/get-product-by-id/FindProductByIdUseCase';
-import { UpdateProductUsecase } from '@modules/products/use_cases/updated-product/UpdateProductUsecase';
 import { FakeProductsRepository } from '@modules/products/repositories/mock/FakeProductsRepository';
 import { FakeSalesRepository } from '@modules/sales/repositories/mock/FakeSalesRepository';
 import { FakeStockProductsRepository } from '@modules/products/repositories/mock/FakeStockProductsRepository';
 import { ManagerProductIndStockUseCase } from '@modules/products/use_cases/add-product-in-stock/ManagerProductInStockUseCase';
-import { CreateSaleUseCase } from './CreateSaleUseCase';
+import { CreateSaleUseCase } from '@modules/sales/use_cases/create-sale/CreateSaleUseCase';
+import { FindAllSalesUseCase } from './FindAllSalesUseCase';
 
 let createUserUseCase: CreateUserUseCase;
 let fakeUsersRepository: FakeUsersRepository;
@@ -16,15 +15,14 @@ let fakeHashProvider: FakeHashProvider;
 
 let createProductUseCase: CreateProductUseCase;
 let managerProductIndStockUseCase: ManagerProductIndStockUseCase;
-let findProductByIdUseCase: FindProductByIdUseCase;
-let updateProductseCase: UpdateProductUsecase;
 let createSaleUseCase: CreateSaleUseCase;
+let findAllSalesUseCase: FindAllSalesUseCase;
 
 let fakeProductsRepository: FakeProductsRepository;
 let fakeStockProductsRepository: FakeStockProductsRepository;
 let fakeSalesRepository: FakeSalesRepository;
 
-describe('Sale product', () => {
+describe('List sale products', () => {
   beforeEach(() => {
     fakeHashProvider = new FakeHashProvider();
 
@@ -38,8 +36,6 @@ describe('Sale product', () => {
       fakeHashProvider,
     );
     createProductUseCase = new CreateProductUseCase(fakeProductsRepository);
-    findProductByIdUseCase = new FindProductByIdUseCase(fakeProductsRepository);
-    updateProductseCase = new UpdateProductUsecase(fakeProductsRepository);
     managerProductIndStockUseCase = new ManagerProductIndStockUseCase(
       fakeProductsRepository,
       fakeStockProductsRepository,
@@ -49,7 +45,9 @@ describe('Sale product', () => {
       fakeStockProductsRepository,
       fakeSalesRepository,
     );
+    findAllSalesUseCase = new FindAllSalesUseCase(fakeSalesRepository);
   });
+
   it('Should be able create sale', async () => {
     const user = await createUserUseCase.execute({
       email: 'johndoe@example.com',
@@ -80,8 +78,7 @@ describe('Sale product', () => {
       quantity: 10,
       type: 'Input',
     });
-
-    const sale = await createSaleUseCase.execute({
+    await createSaleUseCase.execute({
       user_id: user.id,
       transactions: [
         {
@@ -94,8 +91,12 @@ describe('Sale product', () => {
         },
       ],
     });
+    const sales = await findAllSalesUseCase.execute();
+    expect(sales).not.toHaveLength(0);
+  });
 
-    expect(sale.transactions).not.toHaveLength(0);
-    expect(sale.qrcode).toBeDefined();
+  it('Should be able create sale', async () => {
+    const sales = await findAllSalesUseCase.execute();
+    expect(sales).toHaveLength(0);
   });
 });

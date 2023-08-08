@@ -5,7 +5,6 @@ import * as qrcode from 'qrcode';
 import ProductsRepositoryInterface from '@modules/products/repositories/interface/ProductsRepositoryInterface';
 import StockProductsRepositoryInterface from '@modules/products/repositories/interface/StockProductsRepositoryInterface';
 import SalesRepositoryInterface from '@modules/sales/repositories/interface/SalesRepositoryInterface';
-import ProductEntity from '@modules/products/infrastructure/typeorm/entities/Product';
 import AppError from '@shared/errors/AppError';
 
 interface ITransaction {
