@@ -15,18 +15,21 @@ Segurança é primordial, portanto, utilize os conceitos de token de autenticaç
 #Antes da venda ser feita, é necessário que haja produtos no banco de dados,
 portanto, espera-se um CRUD:
 
-[] products (id, name, description, category, photo, created_at, updated_at)
-[] Listar produtos
-[] Buscar um produto específico
-[] opcional - Deletar um produto
-[] opcional - Atualizar um produto
-[] opcional - Controle de estoque
+[X] products (id, name, description, price, created_at, updated_at)
+[x] Listar produtos
+[x] Buscar um produto específico
+[X] opcional - Deletar um produto
+[X] opcional - Atualizar um produto
+[X] opcional - Controle de estoque
 
-[] clients (id, name, description, category, photo, created_at, updated_at)
-[] Listar Clientes
+[] clients (id, name, email, phone, created_at, updated_at)
+[] Listar clientes
+[] Criar cliente
+[] Ver compras do cliente
 
-[] stock_products (id, name, description, category, photo, created_at, updated_at)
-[] Adicionar produto
+[x] stock_products (id, name, description, created_at, updated_at)
+[x] Incluir no estoque
+[x] Movimentar Entrada e Saida
 
 [] sales (id, name, description, category, photo, created_at, updated_at)
 [] Listar vendas
@@ -43,6 +46,7 @@ um QrCode em base64. O payload do QrCode deve ter obrigatoriamente o valor total
 venda. Sinta-se livre para adicionar mais informações.
 
 #Criar container com Docker para o banco de dados e aplicação.
+[x] Criar arquivo de configuração do docker-compose e dockerfile
 
 #opcional - Enviar por e-mail um relatório simples, contendo uma lista ordenada dos
 produtos mais vendidos:
