@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 import UsersRepositoryInterface from '@modules/users/repositories/interface/UsersRepositoryInterface';
 import User from '@modules/users/infrastructure/typeorm/entities/User';
 import CreateUserDTO from '@modules/users/dtos/CreateUserDTO';
@@ -20,7 +20,7 @@ class FakeUsersRepository implements UsersRepositoryInterface {
     email,
     name,
     password,
-    is_admin
+    is_admin,
   }: CreateUserDTO): Promise<User> {
     const user = new User();
 
