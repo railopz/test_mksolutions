@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  is_admin   Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  sales      Sale[]
+
+  @@map("users")
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  price       Decimal  @db.Decimal(10, 2)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+
+  stock StockProduct?
+  sales Sale[]
+
+  @@map("products")
+}
+
+model StockProduct {
+  id         String   @id @default(uuid())
+  product_id String   @unique
+  quantity   Int      @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  product Product? @relation(fields: [product_id], references: [id])
+
+  @@map("stock_products")
+}
+
+model Client {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  sales      Sale[]
+
+  @@map("clients")
+}
+
+enum SaleStatus {
+  pay
+  pending
+  cancel
+}
+
+model Sale {
+  id          String     @id @default(uuid())
+  transaction String
+  product_id  String
+  user_id     String
+  client_id   String
+  quantity    Int
+  total_price Decimal    @db.Decimal(10, 2)
+  status      SaleStatus @default(pending)
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @default(now())
+
+  user    User?   @relation(fields: [user_id], references: [id])
+  product Product @relation(fields: [product_id], references: [id])
+  client  Client? @relation(fields: [client_id], references: [id])
+
+  @@map("sales")
+}

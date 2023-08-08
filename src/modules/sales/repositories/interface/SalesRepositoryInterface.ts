@@ -1,12 +1,12 @@
 import CreateSaleDTO from '@modules/sales/dtos/CreateSaleDTO';
-import SaleEntity from '@modules/sales/infrastructure/typeorm/entities/Sale';
+import { Sale } from '@prisma/client';
 
 export default interface SalesRepositoryInterface {
-  listAllTransaction(): Promise<SaleEntity[]>;
-  findTransactionsById(id: string): Promise<SaleEntity | undefined>;
-  listTransactionsByHash(transaction_hash: string): Promise<SaleEntity[]>;
-  totalTransaction(transaction: string): Promise<SaleEntity[]>;
-  invoiceTransactionById(id: string): Promise<SaleEntity[]>;
-  createTransaction(data: CreateSaleDTO): Promise<SaleEntity>;
-  save(sale: SaleEntity): Promise<SaleEntity>;
+  listAllTransaction(): Promise<Sale[]>;
+  findTransactionsById(id: string): Promise<Sale | undefined>;
+  listTransactionsByHash(transaction_hash: string): Promise<Sale[]>;
+  totalTransaction(transaction: string): Promise<Sale[]>;
+  invoiceTransactionById(id: string): Promise<Sale[]>;
+  createTransaction(data: CreateSaleDTO): Promise<Sale>;
+  save(sale: Sale): Promise<Sale>;
 }

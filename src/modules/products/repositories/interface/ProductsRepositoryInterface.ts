@@ -1,11 +1,11 @@
-import ProductEntity from '@modules/products/infrastructure/typeorm/entities/Product';
 import CreateProductDTO from '@modules/products/dtos/CreateProductDTO';
+import { Product } from '@prisma/client';
 
 export default interface ProductsRepositoryInterface {
-  listAll(): Promise<ProductEntity[]>;
-  findById(id: string): Promise<ProductEntity | undefined>;
-  findByName(name: string): Promise<ProductEntity | undefined>;
-  create(data: CreateProductDTO): Promise<ProductEntity>;
-  save(product: ProductEntity): Promise<ProductEntity>;
+  listAll(): Promise<Product[]>;
+  findById(id: string): Promise<Product | undefined>;
+  findByName(name: string): Promise<Product | undefined>;
+  create(data: CreateProductDTO): Promise<Product>;
+  save(product: Product): Promise<Product>;
   deleteProduct(id: string): Promise<void>;
 }

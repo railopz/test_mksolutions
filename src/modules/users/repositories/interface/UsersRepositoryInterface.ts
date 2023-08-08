@@ -1,5 +1,5 @@
-import User from '@modules/users/infrastructure/typeorm/entities/User';
 import CreateUserDTO from '@modules/users/dtos/CreateUserDTO';
+import { User } from '@prisma/client';
 
 export default interface UsersRepositoryInterface {
   findById(id: string): Promise<User | undefined>;

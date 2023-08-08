@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 import { sign } from 'jsonwebtoken';
 
-import User from '@modules/users/infrastructure/typeorm/entities/User';
+import User from '@modules/users/infrastructure/prisma/entities/User';
 import UsersRepositoryInterface from '@modules/users/repositories/interface/UsersRepositoryInterface';
 import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 

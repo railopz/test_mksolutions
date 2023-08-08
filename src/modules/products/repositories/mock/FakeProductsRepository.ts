@@ -1,21 +1,22 @@
 import { v4 as uuid } from 'uuid';
 import ProductsRepositoryInterface from '../interface/ProductsRepositoryInterface';
-import ProductEntity from '@modules/products/infrastructure/typeorm/entities/Product';
 import CreateProductDTO from '@modules/products/dtos/CreateProductDTO';
+import { Product } from '@prisma/client';
+import { ProductEntity } from '@modules/products/domain/Product';
 
 class FakeProductsRepository implements ProductsRepositoryInterface {
-  private products: ProductEntity[] = [];
+  private products: Product[] = [];
 
-  public async listAll(): Promise<ProductEntity[]> {
+  public async listAll(): Promise<Product[]> {
     return this.products;
   }
 
-  public async findById(id: string): Promise<ProductEntity | undefined> {
+  public async findById(id: string): Promise<Product | undefined> {
     const findProduct = this.products.find(product => product.id === id);
     return findProduct;
   }
 
-  public async findByName(name: string): Promise<ProductEntity | undefined> {
+  public async findByName(name: string): Promise<Product | undefined> {
     const findProduct = this.products.find(product => product.name === name);
     return findProduct;
   }
@@ -24,14 +25,17 @@ class FakeProductsRepository implements ProductsRepositoryInterface {
     name,
     description,
     price,
-  }: CreateProductDTO): Promise<ProductEntity> {
-    const product = new ProductEntity();
-    Object.assign(product, { id: uuid(), name, description, price });
+  }: CreateProductDTO): Promise<Product> {
+    const product = new ProductEntity({
+      name,
+      description,
+      price,
+    });
     this.products.push(product);
     return product;
   }
 
-  public async save(product: ProductEntity): Promise<ProductEntity> {
+  public async save(product: Product): Promise<Product> {
     const findIndex = this.products.findIndex(
       findProduct => findProduct.id === product.id,
     );

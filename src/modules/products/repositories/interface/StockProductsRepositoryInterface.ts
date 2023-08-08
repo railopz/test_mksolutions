@@ -1,17 +1,9 @@
-import ProductEntity from '@modules/products/infrastructure/typeorm/entities/Product';
-import StockProductEntity from '@modules/products/infrastructure/typeorm/entities/StockProduct';
 import CreateStockProductDTO from '@modules/products/dtos/CreateStockDTO';
-
-interface IRequestInputOrOutputStock {
-  product_id: string;
-  quantity: number;
-}
+import { StockProduct } from '@prisma/client';
 
 export default interface StockProductsRepositoryInterface {
-  listAll(): Promise<StockProductEntity[]>;
-  findStockByProductId(
-    product_id: string,
-  ): Promise<StockProductEntity | undefined>;
-  create(data: CreateStockProductDTO): Promise<StockProductEntity>;
-  save(stock: StockProductEntity): Promise<StockProductEntity>;
+  listAll(): Promise<StockProduct[]>;
+  findStockByProductId(product_id: string): Promise<StockProduct | undefined>;
+  create(data: CreateStockProductDTO): Promise<StockProduct>;
+  save(stock: StockProduct): Promise<StockProduct>;
 }
