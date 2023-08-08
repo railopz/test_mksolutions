@@ -1,5 +1,6 @@
 import { inject } from 'tsyringe';
 import { v4 as uuid } from 'uuid';
+import * as qrcode from 'qrcode';
 
 import ProductsRepositoryInterface from '@modules/products/repositories/interface/ProductsRepositoryInterface';
 import StockProductsRepositoryInterface from '@modules/products/repositories/interface/StockProductsRepositoryInterface';
@@ -74,7 +75,17 @@ class CreateSaleUseCase {
       currency: 'BRL',
     });
 
-    console.log('Total a pagar', formattedTotal);
+    const qrCodeData = JSON.stringify({
+      transaction: transactionHash,
+      total_amount: formattedTotal,
+    });
+
+    const qrCodeBase64 = await qrcode.toDataURL(qrCodeData);
+
+    return {
+      transactions: totalTransactions,
+      qrcode: qrCodeBase64,
+    };
   }
 }
 

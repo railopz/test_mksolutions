@@ -94,5 +94,7 @@ describe('Sale product', () => {
         },
       ],
     });
+
+    expect(sale.transactions).not.toHaveLength(0);
   });
 });
