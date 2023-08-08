@@ -6,7 +6,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-
 @Entity('products')
 class ProductEntity {
   @PrimaryGeneratedColumn()
@@ -16,14 +15,10 @@ class ProductEntity {
   name: string;
 
   @Column()
-  email: string;
-
-  @Column()
   description: string;
 
-  @Column("decimal", { precision: 5, scale: 2 })
+  @Column('decimal', { precision: 5, scale: 2 })
   price: number;
-
 
   @CreateDateColumn()
   created_at: Date;

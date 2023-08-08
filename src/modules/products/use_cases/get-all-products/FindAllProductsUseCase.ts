@@ -1,9 +1,8 @@
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 
 import ProductsRepositoryInterface from '@modules/products/repositories/interface/ProductsRepositoryInterface';
-import CreateProductDTO from '@modules/products/dtos/CreateProductDTO';
-import AppError from '@shared/errors/AppError';
 
+@injectable()
 class FindAllProductsUseCase {
   constructor(
     @inject('ProductsRepository')

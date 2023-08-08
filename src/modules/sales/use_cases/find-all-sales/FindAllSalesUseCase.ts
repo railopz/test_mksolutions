@@ -1,6 +1,7 @@
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import SalesRepositoryInterface from '@modules/sales/repositories/interface/SalesRepositoryInterface';
 
+@injectable()
 class FindAllSalesUseCase {
   constructor(
     @inject('SalesRepository')

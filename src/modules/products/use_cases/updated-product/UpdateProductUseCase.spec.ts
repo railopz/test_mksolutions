@@ -41,9 +41,14 @@ describe('Remove Product', () => {
 
     product.name = 'Calça';
 
-    await updateProductseCase.execute(product);
+    await updateProductseCase.execute({
+      product_id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+    });
     const findProduct = await findProductByIdUseCase.execute(product.id);
-    expect(findProduct.name).toEqual('Calça');
+    expect(findProduct.name).toEqual('CALÇA');
   });
   it('should not be able update product name already exists', async () => {
     const product = await createProductUseCase.execute({
@@ -68,14 +73,29 @@ describe('Remove Product', () => {
     product2.name = 'Camisa 10';
     product3.id = 'not_exists';
 
-    await expect(updateProductseCase.execute(product)).rejects.toBeInstanceOf(
-      AppError,
-    );
-    await expect(updateProductseCase.execute(product2)).rejects.toBeInstanceOf(
-      AppError,
-    );
-    await expect(updateProductseCase.execute(product3)).rejects.toBeInstanceOf(
-      AppError,
-    );
+    await expect(
+      updateProductseCase.execute({
+        product_id: product2.id,
+        name: product2.name,
+        description: product2.description,
+        price: product2.price,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+    await expect(
+      updateProductseCase.execute({
+        product_id: product.id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+    await expect(
+      updateProductseCase.execute({
+        product_id: product3.id,
+        name: product3.name,
+        description: product3.description,
+        price: product3.price,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });

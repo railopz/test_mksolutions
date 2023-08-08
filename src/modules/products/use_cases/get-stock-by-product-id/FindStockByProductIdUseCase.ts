@@ -1,7 +1,8 @@
 import StockProductsRepositoryInterface from '@modules/products/repositories/interface/StockProductsRepositoryInterface';
 import AppError from '@shared/errors/AppError';
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 class FindStockByProductIdUseCase {
   constructor(
     @inject('StockProductsRepository')

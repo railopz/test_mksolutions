@@ -1,27 +1,22 @@
-import { inject } from "tsyringe";
-import UsersRepositoryInterface from "@modules/users/repositories/interface/UsersRepositoryInterface";
-import IHashProvider from "@modules/users/providers/HashProvider/models/IHashProvider";
-import CreateUserDTO from "@modules/users/dtos/CreateUserDTO";
-import AppError from "@shared/errors/AppError";
+import { inject, injectable } from 'tsyringe';
+import UsersRepositoryInterface from '@modules/users/repositories/interface/UsersRepositoryInterface';
+import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
+import CreateUserDTO from '@modules/users/dtos/CreateUserDTO';
+import AppError from '@shared/errors/AppError';
 
-
+@injectable()
 class CreateUserUseCase {
   constructor(
     @inject('UsersRepository')
     private usersRepository: UsersRepositoryInterface,
     @inject('HashProvider')
     private hashProvider: IHashProvider,
-  )  {}
-  public async execute({
-    name,
-    email,
-    password,
-    is_admin
-  }: CreateUserDTO) {
+  ) {}
+  public async execute({ name, email, password, is_admin }: CreateUserDTO) {
     const findByEmailExists = await this.usersRepository.findByEmail(email);
 
     if (findByEmailExists) {
-      throw new AppError('E-mail already exists', 409)
+      throw new AppError('E-mail already exists', 409);
     }
 
     const passwordHash = await this.hashProvider.generateHash(password);
@@ -30,12 +25,11 @@ class CreateUserUseCase {
       name,
       email,
       password: passwordHash,
-      is_admin
-    })
+      is_admin,
+    });
 
     return user;
   }
 }
 
-
-export {CreateUserUseCase}
+export { CreateUserUseCase };

@@ -1,7 +1,8 @@
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import ProductsRepositoryInterface from '@modules/products/repositories/interface/ProductsRepositoryInterface';
 
+@injectable()
 class FindProductByIdUseCase {
   constructor(
     @inject('ProductsRepository')

@@ -1,4 +1,4 @@
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 
 import ProductsRepositoryInterface from '@modules/products/repositories/interface/ProductsRepositoryInterface';
 import StockProductsRepositoryInterface from '@modules/products/repositories/interface/StockProductsRepositoryInterface';
@@ -9,6 +9,8 @@ interface IRequest {
   quantity: number;
   type: 'Input' | 'Output';
 }
+
+@injectable()
 class ManagerProductIndStockUseCase {
   constructor(
     @inject('ProductsRepository')

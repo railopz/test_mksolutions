@@ -1,8 +1,9 @@
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import SalesRepositoryInterface from '@modules/sales/repositories/interface/SalesRepositoryInterface';
 import { SaleStatus } from '@modules/sales/infrastructure/typeorm/entities/Sale';
 import AppError from '@shared/errors/AppError';
 
+@injectable()
 class InvoiceSaleUseCase {
   constructor(
     @inject('SalesRepository')

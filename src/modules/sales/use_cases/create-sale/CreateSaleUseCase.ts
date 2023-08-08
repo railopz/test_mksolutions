@@ -1,4 +1,4 @@
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import { v4 as uuid } from 'uuid';
 import * as qrcode from 'qrcode';
 
@@ -18,6 +18,7 @@ interface IRequest {
   transactions: ITransaction[];
 }
 
+@injectable()
 class CreateSaleUseCase {
   constructor(
     @inject('ProductsRepository')
