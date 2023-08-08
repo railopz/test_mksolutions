@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import StockProductEntity from '@modules/products/infrastructure/typeorm/entities/StockProduct';
+import StockProductEntity from '@modules/products/infrastructure/prisma/entities/StockProduct';
 import StockProductsRepositoryInterface from '../interface/StockProductsRepositoryInterface';
 import CreateStockProductDTO from '@modules/products/dtos/CreateStockDTO';
 

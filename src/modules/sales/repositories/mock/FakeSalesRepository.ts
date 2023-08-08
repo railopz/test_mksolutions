@@ -1,36 +1,33 @@
 import { v4 as uuid } from 'uuid';
 
-import SaleEntity, {
-  SaleStatus,
-} from '@modules/sales/infrastructure/typeorm/entities/Sale';
 import SalesRepositoryInterface from '../interface/SalesRepositoryInterface';
 import CreateSaleDTO from '@modules/sales/dtos/CreateSaleDTO';
+import { Sale } from '@prisma/client';
+import { SaleEntity } from '@modules/sales/domain/entities/Sale';
 
 class FakeSalesRepository implements SalesRepositoryInterface {
-  private sales: SaleEntity[] = [];
+  private sales: Sale[] = [];
 
-  public async listAllTransaction(): Promise<SaleEntity[]> {
+  public async listAllTransaction(): Promise<Sale[]> {
     return this.sales;
   }
 
   public async listTransactionsByHash(
     transaction_hash: string,
-  ): Promise<SaleEntity[]> {
+  ): Promise<Sale[]> {
     const sales = this.sales.filter(
       sale => sale.transaction === transaction_hash,
     );
     return sales;
   }
 
-  public async findTransactionsById(
-    id: string,
-  ): Promise<SaleEntity | undefined> {
+  public async findTransactionsById(id: string): Promise<Sale | undefined> {
     const sale = this.sales.find(sale => sale.id === id);
     return sale;
   }
-  public async invoiceTransactionById(id: string): Promise<SaleEntity[]> {
+  public async invoiceTransactionById(id: string): Promise<Sale[]> {
     const findIndex = this.sales.findIndex(sale => sale.id === id);
-    this.sales[findIndex].status = SaleStatus.PAY;
+    this.sales[findIndex].status = 'pay';
     return this.sales;
   }
   public async createTransaction({
@@ -40,29 +37,26 @@ class FakeSalesRepository implements SalesRepositoryInterface {
     product_id,
     quantity,
     total_price,
-  }: CreateSaleDTO): Promise<SaleEntity> {
-    const sale = new SaleEntity();
-    Object.assign(sale, {
-      id: uuid(),
+  }: CreateSaleDTO): Promise<Sale> {
+    const sale = new SaleEntity({
       transaction,
       user_id,
-      client_id,
+      client_id: client_id || null,
       product_id,
       quantity,
       total_price,
-      status: SaleStatus.PENDING,
     });
     this.sales.push(sale);
     return sale;
   }
 
-  public async save(sale: SaleEntity): Promise<SaleEntity> {
+  public async save(sale: Sale): Promise<Sale> {
     const findIndex = this.sales.findIndex(findSale => findSale.id === sale.id);
     this.sales[findIndex] = sale;
     return sale;
   }
 
-  public async totalTransaction(transaction: string): Promise<SaleEntity[]> {
+  public async totalTransaction(transaction: string): Promise<Sale[]> {
     const sales = this.sales.filter(sale => sale.transaction === transaction);
     return sales;
   }

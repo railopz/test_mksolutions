@@ -7,6 +7,7 @@ import { FakeProductsRepository } from '@modules/products/repositories/mock/Fake
 import { FindProductByIdUseCase } from '../get-product-by-id/FindProductByIdUseCase';
 
 import AppError from '@shared/errors/AppError';
+import { Decimal } from '@prisma/client/runtime/library';
 
 let createUserUseCase: CreateUserUseCase;
 let fakeUsersRepository: FakeUsersRepository;
@@ -45,7 +46,7 @@ describe('Remove Product', () => {
       product_id: product.id,
       name: product.name,
       description: product.description,
-      price: product.price,
+      price: parseFloat(product.price.toString()),
     });
     const findProduct = await findProductByIdUseCase.execute(product.id);
     expect(findProduct.name).toEqual('CALÇA');
@@ -69,7 +70,7 @@ describe('Remove Product', () => {
       price: 10.5,
     });
 
-    product.price = -20.2;
+    product.price = new Decimal(-20.2);
     product2.name = 'Camisa 10';
     product3.id = 'not_exists';
 
@@ -78,7 +79,7 @@ describe('Remove Product', () => {
         product_id: product2.id,
         name: product2.name,
         description: product2.description,
-        price: product2.price,
+        price: parseFloat(product2.price.toString()),
       }),
     ).rejects.toBeInstanceOf(AppError);
     await expect(
@@ -86,7 +87,7 @@ describe('Remove Product', () => {
         product_id: product.id,
         name: product.name,
         description: product.description,
-        price: product.price,
+        price: parseFloat(product.price.toString()),
       }),
     ).rejects.toBeInstanceOf(AppError);
     await expect(
@@ -94,7 +95,7 @@ describe('Remove Product', () => {
         product_id: product3.id,
         name: product3.name,
         description: product3.description,
-        price: product3.price,
+        price: parseFloat(product3.price.toString()),
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

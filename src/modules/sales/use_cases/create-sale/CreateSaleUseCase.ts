@@ -47,7 +47,8 @@ class CreateSaleUseCase {
         );
 
         if (stock) {
-          const totalPrice = transaction.quantity * product.price;
+          const totalPrice =
+            transaction.quantity * parseFloat(product.price.toString());
 
           await this.salesRepository.createTransaction({
             transaction: transactionHash,
@@ -66,7 +67,7 @@ class CreateSaleUseCase {
     );
 
     const totalReduce = totalTransactions.reduce(
-      (total, sale) => total + sale.total_price,
+      (total, sale) => total + parseFloat(sale.total_price.toString()),
       0,
     );
 

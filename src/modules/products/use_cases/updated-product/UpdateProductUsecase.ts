@@ -1,7 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import ProductsRepositoryInterface from '@modules/products/repositories/interface/ProductsRepositoryInterface';
-import ProductEntity from '@modules/products/infrastructure/typeorm/entities/Product';
+import ProductEntity from '@modules/products/infrastructure/prisma/entities/Product';
+import { Decimal } from '@prisma/client/runtime/library';
 
 interface IRequest {
   product_id: string;
@@ -36,7 +37,7 @@ class UpdateProductUsecase {
 
     findProductExists.name = name.toUpperCase();
     findProductExists.description = description;
-    findProductExists.price = price;
+    findProductExists.price = new Decimal(price.toString());
 
     await this.productsRepository.save(findProductExists);
   }

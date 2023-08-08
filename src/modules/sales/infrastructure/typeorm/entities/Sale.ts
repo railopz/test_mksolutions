@@ -1,5 +1,5 @@
-import ProductEntity from '@modules/products/infrastructure/typeorm/entities/Product';
-import User from '@modules/users/infrastructure/typeorm/entities/User';
+import ProductEntity from '@modules/products/infrastructure/prisma/entities/Product';
+import User from '@modules/users/infrastructure/prisma/entities/User';
 import {
   Entity,
   Column,

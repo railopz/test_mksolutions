@@ -11,11 +11,12 @@ export default class UsersController {
     const { email, password } = request.body;
 
     const authenticatedUser = container.resolve(AuthenticationUserUseCase);
+
     const user = await authenticatedUser.execute({
       email,
       password,
     });
-
+    delete user.user.password;
     return response.json(user).status(201);
   }
 
@@ -23,7 +24,7 @@ export default class UsersController {
     const { id } = request.user;
     const findUserById = container.resolve(FindUserByIdUseCase);
     const user = await findUserById.execute(id);
-
+    delete user.password;
     return response.json(user).status(201);
   }
 
@@ -43,6 +44,8 @@ export default class UsersController {
       password,
       is_admin,
     });
+
+    delete user.password;
 
     return response.json(user).status(201);
   }
