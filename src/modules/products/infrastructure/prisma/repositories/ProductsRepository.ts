@@ -13,6 +13,7 @@ class ProductsRepository implements ProductsRepositoryInterface {
       where: {
         id,
       },
+      include: { stock: true },
     });
     return product || undefined;
   }

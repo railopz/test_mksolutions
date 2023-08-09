@@ -47,6 +47,10 @@ class CreateSaleUseCase {
         );
 
         if (stock) {
+          if (stock.quantity < transaction.quantity) {
+            throw new AppError('Insuficient Stock', 400);
+          }
+
           const totalPrice =
             transaction.quantity * parseFloat(product.price.toString());
 
@@ -58,6 +62,9 @@ class CreateSaleUseCase {
             user_id,
             client_id,
           });
+
+          stock.quantity -= transaction.quantity;
+          await this.stockProductsRepository.save(stock);
         }
       }
     }

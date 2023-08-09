@@ -159,6 +159,30 @@ A API requer autenticação usando um token JWT. Certifique-se de incluir o toke
 ]
 ```
 
+**Rota**: `GET /products/:product_id`
+
+`Rota responsável trazer as informações de um produto`
+
+**Resposta (Response):**:
+
+```json
+{
+  "id": "5d0aaff7-dcb6-4954-ae1d-960269963471",
+  "name": "TEST REMOVE PRODUCT",
+  "description": "PRODUCT REMOVE",
+  "price": "10.5",
+  "created_at": "2023-08-09T13:00:39.807Z",
+  "updated_at": "2023-08-09T13:00:39.807Z",
+  "stock": {
+    "id": "43b8d085-c9b2-4712-92b5-96d0749dcbb9",
+    "product_id": "5d0aaff7-dcb6-4954-ae1d-960269963471",
+    "quantity": 40,
+    "created_at": "2023-08-09T13:00:39.807Z",
+    "updated_at": "2023-08-09T13:00:39.807Z"
+  }
+}
+```
+
 **Rota**: `PATCH /products/:product_id`
 
 `Rota para que seja feita a atualização dos dados do produto.`
