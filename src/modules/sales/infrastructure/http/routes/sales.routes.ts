@@ -17,6 +17,6 @@ saleRoutes.post(
   salesController.create,
 );
 
-saleRoutes.post('/invoice', ensureAuthenticated, salesController.create);
+saleRoutes.post('/invoice', ensureAuthenticated, salesController.invoice);
 
 export { saleRoutes };

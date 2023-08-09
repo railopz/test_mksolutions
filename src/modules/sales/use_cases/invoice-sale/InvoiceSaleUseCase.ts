@@ -15,7 +15,7 @@ class InvoiceSaleUseCase {
     );
 
     if (sales.length === 0) {
-      throw new AppError('The Transaction is empty', 204);
+      throw new AppError('The Transaction hash not found', 404);
     }
 
     for (const sale of sales) {

@@ -1,11 +1,10 @@
 FROM node:lts
 
-
 # Definindo o diretório de trabalho
-WORKDIR /home/mksolutions/api
+WORKDIR /home/mksolutions/app
 
 # Criando os diretórios e ajustando permissões
-RUN mkdir -p /home/mksolutions/api/node_modules && chown -R ${user}:${user} /home/mksolutions/api
+RUN mkdir -p /home/mksolutions/app/node_modules && chown -R ${user}:${user} /home/mksolutions/app
 
 # Instale o Yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
@@ -16,6 +15,7 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 # Mudando para o usuário definido
 USER ${user}
 
+
 # Copiando os arquivos de dependências
 COPY package.json yarn.* ./
 
@@ -23,10 +23,13 @@ COPY package.json yarn.* ./
 RUN yarn
 
 # Copiando o restante do código
-COPY --chown=${user}:${user} . .
+COPY . .
 
 # Expondo a porta
 EXPOSE 3333
+
+# Compartilhando a pasta node_modules entre o host e o contêiner
+VOLUME ["/home/mksolutions/app/node_modules"]
 
 # Comando para executar a aplicação
 CMD ["yarn", "dev"]

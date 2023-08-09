@@ -13,10 +13,12 @@ services:
      container_name: mk-seller
      restart: unless-stopped
      volumes:
-       - .:/home/mksolutions/api
-       - /home/mksolutions/api/node_modules
+       - .:/home/mksolutions/app
+       - /home/mksolutions/app/node_modules
      ports:
       - '3333:3333'
+     depends_on:
+       - mk_seller_pg
      networks:
        - mksolutions-network
   mk_seller_pg:

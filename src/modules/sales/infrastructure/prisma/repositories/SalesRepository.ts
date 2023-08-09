@@ -5,10 +5,15 @@ import { prisma } from '@shared/infrastructure/prisma/prismaClient';
 
 class SalesRepository implements SalesRepositoryInterface {
   public async listAllTransaction(): Promise<Sale[]> {
-    throw new Error('Method not implemented.');
+    return await prisma.sale.findMany();
   }
   public async findTransactionsById(id: string): Promise<Sale | undefined> {
-    throw new Error('Method not implemented.');
+    const transactions = await prisma.sale.findFirst({
+      where: {
+        id,
+      },
+    });
+    return transactions || undefined;
   }
   public async listTransactionsByHash(
     transaction_hash: string,

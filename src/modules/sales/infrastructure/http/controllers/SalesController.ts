@@ -10,7 +10,7 @@ export default class SalesController {
     response: Response,
   ): Promise<Response> {
     const findAllSalesUseCase = container.resolve(FindAllSalesUseCase);
-    const sales = findAllSalesUseCase.execute();
+    const sales = await findAllSalesUseCase.execute();
     return response.json(sales);
   }
 
