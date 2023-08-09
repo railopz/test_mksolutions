@@ -11,9 +11,11 @@ class FindProductByIdUseCase {
 
   public async execute(id: string) {
     const findProductExists = await this.productsRepository.findById(id);
+
     if (!findProductExists) {
       throw new AppError('Product not exists', 404);
     }
+
     return findProductExists;
   }
 }

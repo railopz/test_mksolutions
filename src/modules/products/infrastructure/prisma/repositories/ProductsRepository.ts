@@ -9,7 +9,7 @@ class ProductsRepository implements ProductsRepositoryInterface {
     return await prisma.product.findMany();
   }
   public async findById(id: string): Promise<Product | undefined> {
-    const product = await prisma.product.findFirst({
+    const product = await prisma.product.findUnique({
       where: {
         id,
       },
@@ -61,12 +61,14 @@ class ProductsRepository implements ProductsRepositoryInterface {
       },
     });
   }
-  public async deleteProduct(id: string): Promise<void> {
+  public async delete(id: string): Promise<void> {
     await prisma.product.delete({
       where: {
         id,
       },
     });
+
+    return;
   }
 }
 

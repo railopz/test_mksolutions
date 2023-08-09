@@ -1,4 +1,3 @@
-import AppError from '@shared/errors/AppError';
 import { app } from '@shared/infrastructure/http/app';
 import request from 'supertest';
 
@@ -60,7 +59,7 @@ describe('User controller', () => {
       .post('/users')
       .send({
         name: 'User Saler',
-        email: 'saler@saler.com',
+        email: 'saler2@saler.com',
         password: '123@345',
         is_admin: false,
       })

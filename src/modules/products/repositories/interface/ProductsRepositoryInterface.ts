@@ -7,5 +7,5 @@ export default interface ProductsRepositoryInterface {
   findByName(name: string): Promise<Product | undefined>;
   create(data: CreateProductDTO): Promise<Product>;
   save(product: Product): Promise<Product>;
-  deleteProduct(id: string): Promise<void>;
+  delete(id: string): Promise<void>;
 }

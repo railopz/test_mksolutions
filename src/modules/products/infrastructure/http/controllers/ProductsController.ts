@@ -5,10 +5,10 @@ import { FindAllProductsUseCase } from '@modules/products/use_cases/get-all-prod
 import { FindProductByIdUseCase } from '@modules/products/use_cases/get-product-by-id/FindProductByIdUseCase';
 import { FindStockByProductIdUseCase } from '@modules/products/use_cases/get-stock-by-product-id/FindStockByProductIdUseCase';
 import { isAdminMiddleware } from '@modules/users/infrastructure/http/middlewares/isAdmin';
-import { ManagerProductIndStockUseCase } from '@modules/products/use_cases/add-product-in-stock/ManagerProductInStockUseCase';
 import { UpdateProductUsecase } from '@modules/products/use_cases/updated-product/UpdateProductUsecase';
 import { CreateProductUseCase } from '@modules/products/use_cases/create-product/CreateProductUseCase';
 import { RemoveProductByIdUseCase } from '@modules/products/use_cases/remove-product/RemoveProductByIdUseCase';
+import { ManagerProductIndStockUseCase } from '@modules/products/use_cases/add-product-in-stock/ManagerProductInStockUseCase';
 
 export default class ProductsController {
   public async listAll(
@@ -16,7 +16,7 @@ export default class ProductsController {
     response: Response,
   ): Promise<Response> {
     const findProducts = container.resolve(FindAllProductsUseCase);
-    const products = findProducts.execute();
+    const products = await findProducts.execute();
     return response.json(products);
   }
 
@@ -24,10 +24,10 @@ export default class ProductsController {
     request: Request,
     response: Response,
   ): Promise<Response> {
-    const { product_id } = request.body;
+    const { product_id } = request.params;
 
     const findProduct = container.resolve(FindProductByIdUseCase);
-    const product = findProduct.execute(product_id);
+    const product = await findProduct.execute(product_id);
     return response.json(product);
   }
 
@@ -37,40 +37,33 @@ export default class ProductsController {
   ): Promise<Response> {
     const { product_id } = request.params;
     const findStockProduct = container.resolve(FindStockByProductIdUseCase);
-    const stockProduct = findStockProduct.execute(product_id);
+    const stockProduct = await findStockProduct.execute(product_id);
     return response.json(stockProduct);
   }
 
-  public async create(
-    request: Request,
-    response: Response,
-    next: NextFunction,
-  ): Promise<Response> {
+  public async create(request: Request, response: Response): Promise<Response> {
     const { name, description, price } = request.body;
 
-    isAdminMiddleware(request, response, next);
+    await isAdminMiddleware(request, response, () => {});
 
     const createProductUseCase = container.resolve(CreateProductUseCase);
-    const product = createProductUseCase.execute({
+    const product = await createProductUseCase.execute({
       name,
       description,
       price,
     });
+
     return response.json(product);
   }
 
-  public async update(
-    request: Request,
-    response: Response,
-    next: NextFunction,
-  ): Promise<Response> {
+  public async update(request: Request, response: Response): Promise<Response> {
     const { product_id } = request.params;
     const { name, description, price } = request.body;
 
-    isAdminMiddleware(request, response, next);
+    await isAdminMiddleware(request, response, () => {});
 
     const updateProductUsecase = container.resolve(UpdateProductUsecase);
-    const product = updateProductUsecase.execute({
+    const product = await updateProductUsecase.execute({
       product_id,
       name,
       description,
@@ -79,36 +72,33 @@ export default class ProductsController {
     return response.json(product);
   }
 
-  public async delete(
-    request: Request,
-    response: Response,
-    next: NextFunction,
-  ): Promise<Response> {
+  public async delete(request: Request, response: Response): Promise<Response> {
     const { product_id } = request.params;
 
-    isAdminMiddleware(request, response, next);
+    await isAdminMiddleware(request, response, () => {});
 
     const removeProductByIdUseCase = container.resolve(
       RemoveProductByIdUseCase,
     );
     await removeProductByIdUseCase.execute(product_id);
-    return response.status(204);
+    return response
+      .json({ message: 'Delete product success', status: 'success' })
+      .status(204);
   }
 
   public async managerStock(
     request: Request,
     response: Response,
-    next: NextFunction,
   ): Promise<Response> {
     const { product_id } = request.params;
     const { quantity, type } = request.body;
 
-    isAdminMiddleware(request, response, next);
+    await isAdminMiddleware(request, response, () => {});
 
     const managerStockProduct = container.resolve(
       ManagerProductIndStockUseCase,
     );
-    const stockProduct = managerStockProduct.execute({
+    const stockProduct = await managerStockProduct.execute({
       product_id,
       quantity,
       type,

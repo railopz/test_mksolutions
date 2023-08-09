@@ -39,7 +39,7 @@ class UpdateProductUsecase {
     findProductExists.description = description;
     findProductExists.price = new Decimal(price.toString());
 
-    await this.productsRepository.save(findProductExists);
+    return await this.productsRepository.save(findProductExists);
   }
 }
 

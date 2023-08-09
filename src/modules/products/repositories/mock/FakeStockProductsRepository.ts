@@ -37,6 +37,16 @@ class FakeStockProductsRepository implements StockProductsRepositoryInterface {
     this.stockProducts[findIndex] = stock;
     return stock;
   }
+
+  public async delete(id: string): Promise<void> {
+    const findIndex = this.stockProducts.findIndex(
+      stock => stock.product_id === id,
+    );
+
+    if (findIndex !== -1) {
+      this.stockProducts.splice(findIndex, 1);
+    }
+  }
 }
 
 export { FakeStockProductsRepository };

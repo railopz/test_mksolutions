@@ -57,8 +57,6 @@ class ManagerProductIndStockUseCase {
         throw new AppError('The quantity cannot be negative', 400);
       }
     }
-
-    return findProductExistInStock;
   }
 }
 

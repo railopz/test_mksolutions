@@ -62,7 +62,7 @@ class CreateSaleUseCase {
       }
     }
 
-    const totalTransactions = await this.salesRepository.totalTransaction(
+    const totalTransactions = await this.salesRepository.listTransactionsByHash(
       transactionHash,
     );
 

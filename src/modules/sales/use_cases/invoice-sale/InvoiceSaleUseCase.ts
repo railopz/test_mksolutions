@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 import SalesRepositoryInterface from '@modules/sales/repositories/interface/SalesRepositoryInterface';
-import { SaleStatus } from '@modules/sales/infrastructure/typeorm/entities/Sale';
+import { SaleStatus } from '@modules/sales/infrastructure/prisma/entities/Sale';
 import AppError from '@shared/errors/AppError';
 
 @injectable()

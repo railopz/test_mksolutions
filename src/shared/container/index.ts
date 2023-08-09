@@ -8,6 +8,10 @@ import { UsersRepository } from '@modules/users/infrastructure/prisma/repositori
 import ProductsRepositoryInterface from '@modules/products/repositories/interface/ProductsRepositoryInterface';
 import { ProductsRepository } from '@modules/products/infrastructure/prisma/repositories/ProductsRepository';
 
+import StockProductsRepositoryInterface from '@modules/products/repositories/interface/StockProductsRepositoryInterface';
+import { StockProductsRepository } from '@modules/products/infrastructure/prisma/repositories/StockProductsRepository';
+import SalesRepositoryInterface from '@modules/sales/repositories/interface/SalesRepositoryInterface';
+
 container.registerSingleton<UsersRepositoryInterface>(
   'UsersRepository',
   UsersRepository,
@@ -17,3 +21,13 @@ container.registerSingleton<ProductsRepositoryInterface>(
   'ProductsRepository',
   ProductsRepository,
 );
+
+container.registerSingleton<StockProductsRepositoryInterface>(
+  'StockProductsRepository',
+  StockProductsRepository,
+);
+
+// container.registerSingleton<SalesRepositoryInterface>(
+//   'SalesRepository',
+//   SalesRepository,
+// );

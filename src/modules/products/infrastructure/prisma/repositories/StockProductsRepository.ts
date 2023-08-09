@@ -12,7 +12,7 @@ class StockProductsRepository implements StockProductsRepositoryInterface {
   ): Promise<StockProduct | undefined> {
     const stock = await prisma.stockProduct.findFirst({
       where: {
-        id: product_id,
+        product_id: product_id,
       },
     });
 
@@ -34,12 +34,20 @@ class StockProductsRepository implements StockProductsRepositoryInterface {
   public async save(stock: StockProduct): Promise<StockProduct> {
     return await prisma.stockProduct.update({
       where: {
-        id: stock.product_id,
+        product_id: stock.product_id,
       },
       data: {
         quantity: stock.quantity,
       },
     });
+  }
+  public async delete(product_id: string): Promise<void> {
+    await prisma.stockProduct.delete({
+      where: {
+        product_id,
+      },
+    });
+    return;
   }
 }
 
