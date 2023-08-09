@@ -70,5 +70,6 @@ model Sale {
   user    User?   @relation(fields: [user_id], references: [id])
   product Product @relation(fields: [product_id], references: [id])
 
+  @@index([product_id], name: "idx_sale_product")
   @@map("sales")
 }

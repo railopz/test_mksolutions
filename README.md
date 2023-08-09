@@ -58,6 +58,16 @@ Bem-vindo à documentação da API. Aqui você encontrará informações sobre c
 
 A base URL para todas as solicitações à API é: `http://localhost:3333`
 
+## Banco de dados
+
+Como Informado acima estamos utilizando a aplicação em um banco de dados postgres, como isso decidi criar apenas um único index na tabela `sale`
+
+```sql
+  CREATE INDEX idx_sale_product ON sales (product_id);
+```
+
+Ao criar esse índice, você otimiza consultas que podem procurar vendas específicas relacionadas a um produto. Isso é particularmente útil quando você deseja buscar vendas de um determinado produto ou calcular métricas relacionadas a ele.
+
 ## Autenticação
 
 A API requer autenticação usando um token JWT. Certifique-se de incluir o token em cada solicitação na forma de um cabeçalho `Authorization`.
