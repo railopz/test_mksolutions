@@ -12,19 +12,25 @@ Você deve ter instalado em sua máquina o Docker e o Docker Compose.
 
 ## Inicialização
 
-1. Primeiramente, execute o Docker Compose para subir os serviços definidos no arquivo `docker-compose.yml`. Você pode fazer isso executando o seguinte comando no seu terminal:
+1. Após efetuar a clonagem do projeto você deve duplicar o .env.test para .env por padrão a rota já estará compatível com o docker local, case precise alterar o banco de dados é só mudar na váriavel de ambiente.
+
+```makefile
+DATABASE_URL="postgresql://mksolutions:mk@1234@mk-postgres:5432/mkdata?schema=public"
+```
+
+2. Execute o Docker Compose para subir os serviços definidos no arquivo `docker-compose.yml`. Você pode fazer isso executando o seguinte comando no seu terminal:
 
    ```bash
    docker-compose up -d
    ```
 
-2. Depois, entre no container do PostgreSQL utilizando o seguinte comando:
+3. Depois, entre no container do PostgreSQL utilizando o seguinte comando:
 
    ```bash
    docker exec -it mk-seller bash
    ```
 
-3. Agora iremos rodar as migrations para popular o banco de dados
+4. Agora iremos rodar as migrations para popular o banco de dados
 
    ```bash
    yarn prisma generate
@@ -36,12 +42,12 @@ Você deve ter instalado em sua máquina o Docker e o Docker Compose.
    yarn prisma db seed
    ```
 
-4. Para sair do servidor é só digitar, você pode pressionar `CTRL + D`.
-5. Agora é só reiniciar a aplicação para que tudo esteja funcionando.
+5. Para sair do servidor é só digitar, você pode pressionar `CTRL + D`.
+6. Agora é só reiniciar a aplicação para que tudo esteja funcionando.
    ```bash
    docker restart mk-seller
    ```
-6. Nosso servidor já vai está rodando na porta `3333`
+7. Nosso servidor já vai está rodando na porta `3333`
 
 # Documentação da API
 
