@@ -43,7 +43,7 @@ class FakeProductsRepository implements ProductsRepositoryInterface {
     return product;
   }
 
-  public async deleteProduct(id: string): Promise<void> {
+  public async delete(id: string): Promise<void> {
     const findIndex = this.products.findIndex(product => product.id === id);
 
     if (findIndex !== -1) {

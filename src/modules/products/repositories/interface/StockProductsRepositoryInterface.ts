@@ -6,4 +6,5 @@ export default interface StockProductsRepositoryInterface {
   findStockByProductId(product_id: string): Promise<StockProduct | undefined>;
   create(data: CreateStockProductDTO): Promise<StockProduct>;
   save(stock: StockProduct): Promise<StockProduct>;
+  delete(product_id: string): Promise<void>;
 }

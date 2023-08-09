@@ -7,6 +7,7 @@ import { FakeProductsRepository } from '@modules/products/repositories/mock/Fake
 import { FindProductByIdUseCase } from '../get-product-by-id/FindProductByIdUseCase';
 
 import AppError from '@shared/errors/AppError';
+import { FakeStockProductsRepository } from '@modules/products/repositories/mock/FakeStockProductsRepository';
 
 let createUserUseCase: CreateUserUseCase;
 let fakeUsersRepository: FakeUsersRepository;
@@ -16,6 +17,7 @@ let createProductUseCase: CreateProductUseCase;
 let findProductByIdUseCase: FindProductByIdUseCase;
 let removeProductByIdUseCase: RemoveProductByIdUseCase;
 let fakeProductsRepository: FakeProductsRepository;
+let fakeStockProductsRepository: FakeStockProductsRepository;
 
 describe('Remove Product', () => {
   beforeEach(() => {
@@ -28,10 +30,12 @@ describe('Remove Product', () => {
     );
 
     fakeProductsRepository = new FakeProductsRepository();
+    fakeStockProductsRepository = new FakeStockProductsRepository();
     createProductUseCase = new CreateProductUseCase(fakeProductsRepository);
     findProductByIdUseCase = new FindProductByIdUseCase(fakeProductsRepository);
     removeProductByIdUseCase = new RemoveProductByIdUseCase(
       fakeProductsRepository,
+      fakeStockProductsRepository,
     );
   });
   it('should be able remove product by id', async () => {

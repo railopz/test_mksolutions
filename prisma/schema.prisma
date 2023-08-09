@@ -49,17 +49,6 @@ model StockProduct {
   @@map("stock_products")
 }
 
-model Client {
-  id         String   @id @default(uuid())
-  name       String
-  email      String   @unique
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  sales      Sale[]
-
-  @@map("clients")
-}
-
 enum SaleStatus {
   pay
   pending
@@ -71,7 +60,7 @@ model Sale {
   transaction String
   product_id  String
   user_id     String
-  client_id   String
+  client_id   String?
   quantity    Int
   total_price Decimal    @db.Decimal(10, 2)
   status      SaleStatus @default(pending)
@@ -80,7 +69,6 @@ model Sale {
 
   user    User?   @relation(fields: [user_id], references: [id])
   product Product @relation(fields: [product_id], references: [id])
-  client  Client? @relation(fields: [client_id], references: [id])
 
   @@map("sales")
 }

@@ -5,6 +5,7 @@ const createUserValidation = celebrate({
     name: Joi.string().required().min(4).max(20),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
+    is_admin: Joi.boolean(),
   },
 });
 

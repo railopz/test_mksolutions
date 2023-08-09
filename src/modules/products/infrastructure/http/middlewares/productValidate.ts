@@ -2,7 +2,7 @@ import { celebrate, Segments, Joi } from 'celebrate';
 
 const idValidatedMiddleware = celebrate({
   [Segments.PARAMS]: {
-    produc_id: Joi.string().uuid().required(),
+    product_id: Joi.string().uuid().required(),
   },
 });
 

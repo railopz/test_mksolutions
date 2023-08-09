@@ -11,7 +11,6 @@ Segurança é primordial, portanto, utilize os conceitos de token de autenticaç
 [x] Autenticar o usuário
 [x] Criar um novo usuário
 [x] Pegar usuário logado
-[] Poderá verificar suas vendas
 
 [] clients (id, name, email, phone, created_at, updated_at)
 [] Listar clientes

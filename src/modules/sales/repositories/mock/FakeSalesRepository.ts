@@ -25,10 +25,10 @@ class FakeSalesRepository implements SalesRepositoryInterface {
     const sale = this.sales.find(sale => sale.id === id);
     return sale;
   }
-  public async invoiceTransactionById(id: string): Promise<Sale[]> {
+  public async invoiceTransactionById(id: string): Promise<Sale | undefined> {
     const findIndex = this.sales.findIndex(sale => sale.id === id);
     this.sales[findIndex].status = 'pay';
-    return this.sales;
+    return this.sales[findIndex] || undefined;
   }
   public async createTransaction({
     transaction,

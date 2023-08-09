@@ -61,12 +61,14 @@ class ProductsRepository implements ProductsRepositoryInterface {
       },
     });
   }
-  public async deleteProduct(id: string): Promise<void> {
+  public async delete(id: string): Promise<void> {
     await prisma.product.delete({
       where: {
         id,
       },
     });
+
+    return;
   }
 }
 
