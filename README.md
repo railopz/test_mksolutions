@@ -4,9 +4,10 @@
 
 Este é um projeto de exemplo que demonstra o uso das seguintes tecnologias:
 
-- Node.js
-- Express
-- Prisma
+● Express
+● PrismaORM
+● Docker e Docker-compose
+● Postgres
 
 Você deve ter instalado em sua máquina o Docker e o Docker Compose.
 

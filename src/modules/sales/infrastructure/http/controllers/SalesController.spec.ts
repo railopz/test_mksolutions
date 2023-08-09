@@ -18,9 +18,17 @@ describe('Sale Controller', () => {
     const product1 = await request(app)
       .post('/products')
       .send({
-        name: 'TESTE SALE',
-        description: 'SALE PRODUCT',
+        name: 'CAMISA MESSI',
+        description: 'CAMISETA EXCLUSIVA DO MESSI.',
         price: 10.5,
+      })
+      .set('Authorization', `Bearer ${authToken}`);
+
+    await request(app)
+      .post(`/products/stock/manager/${product1.body.id}`)
+      .send({
+        quantity: 10,
+        type: 'Input',
       })
       .set('Authorization', `Bearer ${authToken}`);
 
