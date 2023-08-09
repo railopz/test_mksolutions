@@ -26,13 +26,13 @@ Você deve ter instalado em sua máquina o Docker e o Docker Compose.
 3. Agora iremos rodar as migrations para popular o banco de dados
 
     ```bash
-    npx prisma generate
+    yarn prisma generate
     
-    npx prisma migrate dev
+    yarn prisma migrate dev
     
-    npx prisma db push
+    yarn prisma db push
 
-    npx prisma db seed
+    yarn prisma db seed
     ```
 4. Para sair do servidor é só digitar, você pode pressionar `CTRL + D`.
 
