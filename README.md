@@ -50,14 +50,6 @@ DATABASE_URL="postgresql://mksolutions:mk@1234@mk-postgres:5432/mkdata?schema=pu
    ```
 7. Nosso servidor já vai está rodando na porta `3333`
 
-# Documentação da API
-
-Bem-vindo à documentação da API. Aqui você encontrará informações sobre como fazer solicitações e interpretar as respostas da API.
-
-## Base URL
-
-A base URL para todas as solicitações à API é: `http://localhost:3333`
-
 ## Banco de dados
 
 Como Informado acima estamos utilizando a aplicação em um banco de dados postgres, como isso decidi criar apenas um único index na tabela `sale`
@@ -67,6 +59,30 @@ Como Informado acima estamos utilizando a aplicação em um banco de dados postg
 ```
 
 Ao criar esse índice, você otimiza consultas que podem procurar vendas específicas relacionadas a um produto. Isso é particularmente útil quando você deseja buscar vendas de um determinado produto ou calcular métricas relacionadas a ele.
+
+# Documentação da API
+
+Bem-vindo à documentação da API. Aqui você encontrará informações sobre como fazer solicitações e interpretar as respostas da API.
+
+## Base URL
+
+A base URL para todas as solicitações à API é: `http://localhost:3333`
+
+## Testes
+
+A Aplicação dispõe duas formas de testes, únitarios `que é executada na lógica da aplicação` e também de integração `que testa a funcionalidade como um todo`
+
+1. Para executar o teste de unidade execute o comando abaixo:
+
+```bash
+  yarn test
+```
+
+2. Para executar o teste de integração execute o comando abaixo:
+
+```bash
+  yarn test:e2e
+```
 
 ## Autenticação
 
