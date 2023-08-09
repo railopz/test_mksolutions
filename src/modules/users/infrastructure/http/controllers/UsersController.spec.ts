@@ -1,7 +1,18 @@
 import { app } from '@shared/infrastructure/http/app';
 import request from 'supertest';
 
+let authToken = '';
+
 describe('User controller', () => {
+  beforeEach(async () => {
+    const response = await request(app).post('/sessions').send({
+      email: 'test@test.com',
+      password: '123@456',
+    });
+
+    authToken = response.body.token;
+  });
+
   it('should be able create user session', async () => {
     const response = await request(app).post('/sessions').send({
       email: 'test@test.com',
@@ -32,14 +43,9 @@ describe('User controller', () => {
   });
 
   it('should ble able capture information user logged', async () => {
-    const { body } = await request(app).post('/sessions').send({
-      email: 'test@test.com',
-      password: '123@456',
-    });
-
     const response = await request(app)
       .get('/users/me')
-      .set('Authorization', 'bearer ' + body.token);
+      .set('Authorization', `Bearer ${authToken}`);
 
     expect(response.body).toHaveProperty('id');
   });
@@ -50,11 +56,6 @@ describe('User controller', () => {
   });
 
   it('should be able the create an new user ', async () => {
-    const { body } = await request(app).post('/sessions').send({
-      email: 'test@test.com',
-      password: '123@456',
-    });
-
     const response = await request(app)
       .post('/users')
       .send({
@@ -63,33 +64,28 @@ describe('User controller', () => {
         password: '123@345',
         is_admin: false,
       })
-      .set('Authorization', 'bearer ' + body.token);
+      .set('Authorization', `Bearer ${authToken}`);
 
     expect(response.body).toHaveProperty('id');
   });
 
   it('should not be able the create an new user, email already exists', async () => {
-    const { body } = await request(app).post('/sessions').send({
-      email: 'test@test.com',
-      password: '123@456',
-    });
-
     const response = await request(app)
       .post('/users')
       .send({
         name: 'User Saler',
-        email: 'saler@saler.com',
+        email: 'saler2@saler.com',
         password: '123@345',
         is_admin: false,
       })
-      .set('Authorization', 'bearer ' + body.token);
+      .set('Authorization', `Bearer ${authToken}`);
 
     expect(response.body.message).toEqual('E-mail already exists');
   });
 
   it('should not be able create new user, user is not administrator', async () => {
     const { body } = await request(app).post('/sessions').send({
-      email: 'saler@saler.com',
+      email: 'saler2@saler.com',
       password: '123@345',
     });
 
@@ -99,9 +95,9 @@ describe('User controller', () => {
         name: 'User is Not Admin',
         email: 'user_not_admin@test.com',
         password: '123@345',
-        is_admin: true,
+        is_admin: false,
       })
-      .set('Authorization', 'bearer ' + body.token);
+      .set('Authorization', `Bearer ${body.token}`);
 
     expect(response.body.message).toEqual(
       'Access denied. Only admins allowed.',

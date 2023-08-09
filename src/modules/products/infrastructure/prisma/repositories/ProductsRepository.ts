@@ -9,7 +9,7 @@ class ProductsRepository implements ProductsRepositoryInterface {
     return await prisma.product.findMany();
   }
   public async findById(id: string): Promise<Product | undefined> {
-    const product = await prisma.product.findUnique({
+    const product = await prisma.product.findFirst({
       where: {
         id,
       },

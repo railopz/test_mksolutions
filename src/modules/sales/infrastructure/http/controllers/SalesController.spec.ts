@@ -4,7 +4,7 @@ import request from 'supertest';
 
 let authToken = '';
 
-describe('Product Controller', () => {
+describe('Sale Controller', () => {
   beforeEach(async () => {
     const response = await request(app).post('/sessions').send({
       email: 'test@test.com',
@@ -14,20 +14,30 @@ describe('Product Controller', () => {
     authToken = response.body.token;
   });
 
-  it('should be able list one product', async () => {
-    const { body } = await request(app)
+  it('should be able create sale', async () => {
+    const product1 = await request(app)
       .post('/products')
       .send({
-        name: 'test list one product',
-        description: 'test list one product',
+        name: 'TESTE SALE',
+        description: 'SALE PRODUCT',
         price: 10.5,
       })
       .set('Authorization', `Bearer ${authToken}`);
 
     const response = await request(app)
-      .get(`/products/${body.id}`)
+      .post('/sales')
+      .send({
+        transactions: [
+          {
+            product_id: product1.body.id,
+            quantity: 10,
+          },
+        ],
+      })
       .set('Authorization', `Bearer ${authToken}`);
 
-    expect(response.body.name).toEqual(body.name);
+    expect(response.body).toHaveProperty('hash');
+    expect(response.body).toHaveProperty('qrcode');
+    expect(response.body).toHaveProperty('transactions');
   });
 });

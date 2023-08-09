@@ -19,7 +19,7 @@ export default class SalesController {
     const { transactions, client_id } = request.body;
 
     const createSaleUseCase = container.resolve(CreateSaleUseCase);
-    const sale = createSaleUseCase.execute({
+    const sale = await createSaleUseCase.execute({
       transactions,
       client_id,
       user_id: id,
