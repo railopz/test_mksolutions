@@ -2,60 +2,297 @@
 
 ## Pré-requisitos
 
-#A venda será realizada pela pessoa frente de caixa, portanto, deve haver pelo
-menos um cadastro de vendedor no sistema. Este cadastro servirá para fazer a
-autenticação numa API.
-Segurança é primordial, portanto, utilize os conceitos de token de autenticação.
+Este é um projeto de exemplo que demonstra o uso das seguintes tecnologias:
 
-[x] users (id, name, password, is_admin, is_seller, created_at, updated_at)
-[x] Autenticar o usuário
-[x] Criar um novo usuário
-[x] Pegar usuário logado
+- Node.js
+- Express
+- Prisma
 
-[] clients (id, name, email, phone, created_at, updated_at)
-[] Listar clientes
-[] Criar cliente
-[] Ver compras do cliente
+Você deve ter instalado em sua máquina o Docker e o Docker Compose.
 
-#Antes da venda ser feita, é necessário que haja produtos no banco de dados,
-portanto, espera-se um CRUD:
+## Inicialização
+1. Primeiramente, execute o Docker Compose para subir os serviços definidos no arquivo `docker-compose.yml`. Você pode fazer isso executando o seguinte comando no seu terminal:
 
-[X] products (id, name, description, price, created_at, updated_at)
-[x] Listar produtos
-[x] Buscar um produto específico
-[X] opcional - Deletar um produto
-[X] opcional - Atualizar um produto
-[X] opcional - Controle de estoque
+    ```bash
+    docker-compose up -d
+    ```
 
-[x] stock_products (id, name, description, created_at, updated_at)
-[x] Incluir no estoque
-[x] Movimentar Entrada e Saida
+2. Depois, entre no container do PostgreSQL utilizando o seguinte comando:
 
-##Atenção: Lembre-se que, ao criar qualquer entidade via api, é necessário validações:
-valores de produtos não podem ser inferiores a zero, nomes devem ter um limite de
-caracteres etc. Seja criativo, mas não muito.
+    ```bash
+    docker exec -it mk-seller bash
+    ```
 
-#. No momento da venda, podem ser selecionados N produtos. Cada produto poderá
-ser comprado em qualquer quantidade.
+3. Agora iremos rodar as migrations para popular o banco de dados
 
-[x] sales (id, name, description, created_at, updated_at)
-[x] Será possível executar uma venda
-[x] Será possível listar todas as vendas
-[x] Será Possível capturar uma venda pendente para faturar
+    ```bash
+    npx prisma generate
+    
+    npx prisma migrate dev
+    
+    npx prisma db push
 
-#Para que o cliente possa pagar, o retorno da api de cadastro de venda deve conter
-um QrCode em base64. O payload do QrCode deve ter obrigatoriamente o valor total da
-venda. Sinta-se livre para adicionar mais informações.
-[x] Criação da imagem para pagamento
+    npx prisma db seed
+    ```
+4. Para sair do servidor é só digitar, você pode pressionar `CTRL + D`.
 
-#Criar container com Docker para o banco de dados e aplicação.
-[x] Criar arquivo de configuração do docker-compose e dockerfile
+5. Nosso servidor já vai está rodando na porta `3333`
 
-#opcional - Enviar por e-mail um relatório simples, contendo uma lista ordenada dos
-produtos mais vendidos:
+# Documentação da API
 
-#opcional - Utilizar mensageria ou fila em algum dos fluxos. Sugestão: Kafka,
-RabbitMq, Apache Camel, queue com redis etc.
+Bem-vindo à documentação da API. Aqui você encontrará informações sobre como fazer solicitações e interpretar as respostas da API.
 
-#opcional - Criar indexes para as tabelas de banco de dados e fazer um breve
-comentário explicando o porquê das escolhas.x
+## Base URL
+
+A base URL para todas as solicitações à API é: `http://localhost:3333`
+
+## Autenticação
+
+A API requer autenticação usando um token JWT. Certifique-se de incluir o token em cada solicitação na forma de um cabeçalho `Authorization`.
+
+## Solicitações (Requests)
+**Cabeçalho (Headers)**:
+```makefile
+  Authorization: Bearer SEU_TOKEN_JWT
+```
+
+
+### Autenticação
+**Rota**: `POST /sessions`
+**Request (Body)**:
+```json
+{
+  "email": "test@test.com",
+  "password": "123@456"
+}
+```
+**Resposta (Response):**:
+```json
+{
+   "user": {
+      "id": "049cb0d4-3392-4c55-b089-ef8d93ce1d99",
+      "name": "Administrador",
+      "email": "test@test.com",
+      "is_admin": true
+  },
+  "token": "token_api"
+}
+```
+### Produtos
+**Rota**: `GET /products`
+`Rota responsável por listar todos os produtos.`
+**Resposta (Response):**:
+```json
+[
+	{
+		"id": "ddf783f5-6ef9-4b2c-a2c3-4a11f64dba1c",
+		"name": "TESTE SALE",
+		"description": "SALE PRODUCT",
+		"price": "10.5",
+		"created_at": "2023-08-09T07:21:22.942Z",
+		"updated_at": "2023-08-09T07:21:22.942Z"
+	},
+]
+
+```
+**Rota**: `PATCH /products/:product_id`
+
+`Rota para que seja feita a atualização dos dados do produto.`
+
+**Request (Body):**:
+```json
+{
+	"name": "TESTE 3",
+	"description": "TESTE",
+	"price": 20
+}
+```
+**Resposta (Response):**:
+```json
+{
+	"id": "7a75384f-62c3-4826-b39b-d1236ae3cda5",
+	"name": "TESTE 3",
+	"description": "TESTE",
+	"price": "20",
+	"created_at": "2023-08-09T08:03:36.452Z",
+	"updated_at": "2023-08-09T08:03:36.452Z"
+}
+```
+**Mensagem de error:**:
+`Caso passe um ID que não existe na url.`
+```json
+{
+	"status": "error",
+	"message": "Product not exists"
+}
+```
+
+`Caso os dados informados para a aplicação não estejam de acordo com a validação`
+```json
+{
+	"statusCode": 400,
+	"error": "Bad Request",
+	"message": "Validation failed",
+	"validation": {
+		"params": {
+			"source": "params",
+			"keys": [
+				"product_id"
+			],
+			"message": "\"product_id\" must be a valid GUID"
+		}
+	}
+}
+```
+**Rota**: `DELETE /products/:product_id`
+`Rota destinada a remover um produto, com isso o produto também é removido do estoque.`
+
+**Resposta (Response):**:
+```json
+{
+	"message": "Delete product success",
+	"status": "success"
+}
+```
+**Mensagem de error:**:
+`Caso passe um ID que não existe na url.`
+```json
+{
+	"status": "error",
+	"message": "Product not exists"
+}
+```
+
+`Caso os dados informados para a aplicação não estejam de acordo com a validação`
+```json
+{
+	"statusCode": 400,
+	"error": "Bad Request",
+	"message": "Validation failed",
+	"validation": {
+		"params": {
+			"source": "params",
+			"keys": [
+				"product_id"
+			],
+			"message": "\"product_id\" must be a valid GUID"
+		}
+	}
+}
+```
+
+**Rota**: `POST /products/stock/manager/:product_id`
+`Rota destinada a controle do estoque, dando assim entrada e saída de produtos.`
+
+**Request (Body):**:
+```json
+{
+	"quantity": 20,
+	"type": "Output"
+}
+```
+`
+o type pode ser Input | Output. Já a quantidade não pode ser negativa.
+`
+
+**Resposta (Response):**:
+```json
+{
+	"id": "7a75384f-62c3-4826-b39b-d1236ae3cda5",
+	"name": "TESTE 3",
+	"description": "TESTE",
+	"price": "20",
+	"created_at": "2023-08-09T08:03:36.452Z",
+	"updated_at": "2023-08-09T08:03:36.452Z"
+}
+```
+**Mensagem de error:**:
+`Exemplo caso de quantidade`
+```json
+{
+	"status": "error",
+	"message": "The quantity cannot be negative"
+}
+```
+
+`Caso os dados informados para a aplicação não estejam de acordo com a validação`
+```json
+{
+	"statusCode": 400,
+	"error": "Bad Request",
+	"message": "Validation failed",
+	"validation": {
+		"params": {
+			"source": "params",
+			"keys": [
+				"product_id"
+			],
+			"message": "\"product_id\" must be a valid GUID"
+		}
+	}
+}
+```
+### Vendas
+
+**Rota**: `POST /sales`
+`Rota responsável por lançar uma venda`
+
+**Request (Body):**:
+```json
+{
+	"transactions": [
+		{
+			"product_id": "563ef8d5-6825-42bb-934d-1e2d3027906a",
+			"quantity": 10
+		}
+	]
+}
+```
+
+**Resposta (Response):**:
+```json
+{
+	"hash": "1f4c7631-9369-46fc-be0e-715749535c4d",
+	"transactions": [
+		{
+			"id": "94e6eed0-758a-40e0-afe6-9756e26c5a90",
+			"transaction": "1f4c7631-9369-46fc-be0e-715749535c4d",
+			"product_id": "7a75384f-62c3-4826-b39b-d1236ae3cda5",
+			"user_id": "049cb0d4-3392-4c55-b089-ef8d93ce1d99",
+			"client_id": null,
+			"quantity": 10,
+			"total_price": "200",
+			"status": "pending",
+			"created_at": "2023-08-09T08:22:55.475Z",
+			"updated_at": "2023-08-09T08:22:55.475Z"
+		}
+	],
+	"qrcode": "QRCODEBASE64"
+}
+```
+**Mensagem de error:**:
+`Exemplo caso de quantidade`
+```json
+{
+	"status": "error",
+	"message": "The quantity cannot be negative"
+}
+```
+
+`Caso os dados informados para a aplicação não estejam de acordo com a validação`
+```json
+{
+	"statusCode": 400,
+	"error": "Bad Request",
+	"message": "Validation failed",
+	"validation": {
+		"params": {
+			"source": "params",
+			"keys": [
+				"product_id"
+			],
+			"message": "\"product_id\" must be a valid GUID"
+		}
+	}
+}
+```
